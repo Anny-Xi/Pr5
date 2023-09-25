@@ -8,9 +8,22 @@
     <title>Rubiks Cube - @yield('title')</title>
 </head>
 <body>
-@yield('header')
+<section>
+    <ul>
+        <li>Home</li>
+        <li>Product</li>
+        <li>Information</li>
+        <li>Q&A</li>
+    </ul>
+    <p>This is header</p>
+</section>
 
 @yield('content')
-@yield('footer')
+
+<section>
+    <p>@2023</p>
+    <p>This is footer</p>
+</section>
+
 </body>
 </html>
