@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('cubes', function (Blueprint $table) {
             $table->id();
             $table->string('name',100);
+            $table->integer('year');
             $table->string('description')->nullable();
             $table->string('cube_image');
             $table->timestamps();

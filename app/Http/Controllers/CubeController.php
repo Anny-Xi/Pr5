@@ -12,7 +12,16 @@ class CubeController extends Controller
      */
     public function index()
     {
-        //
+//        if (request('search')) {
+//            $recipes = Recipe::where('name', 'like', '%' . request('search') . '%')->get();
+//        } else {
+//            $recipes = Recipe::all();
+//        }
+//
+//
+//        return view('recipes.index', ['recipes' => $recipes]);
+        return view('cubes.index');
+
     }
 
     /**
@@ -20,7 +29,9 @@ class CubeController extends Controller
      */
     public function create()
     {
-        //
+//        dd();
+        return view('cubes.create');
+
     }
 
     /**
@@ -28,7 +39,24 @@ class CubeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'difficulty' => 'required',
+            'year' => 'required',
+            'description' => 'required',
+        ]);
+
+        $cube = new Cube;
+        $cube->name = $request->input('name');
+        $cube->difficulty = $request->input('difficulty');
+        $cube->year = $request->input('year');
+        $cube->description = $request->input('description');
+        $cube->save();
+
+        return redirect()->back()->with([
+            'message' => 'Recipe added successfully!',
+            'status' => 'success'
+        ]);
     }
 
     /**

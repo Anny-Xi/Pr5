@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\CubeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,4 +21,7 @@ Route::get('/', [WelcomeController::class,'index']);
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/cubes', [CubeController::class, 'index'])->name('cubes.index');
+Route::get('/cubes/create', [CubeController::class, 'create'])->name('cubes.create');
+Route::post('/cube/store', [CubeController::class, 'store'])->name('cubes.store');
