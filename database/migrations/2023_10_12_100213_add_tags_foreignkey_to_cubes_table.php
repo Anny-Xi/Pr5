@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cubes', function (Blueprint $table) {
-            $table->id();
-            $table->string('name',100);
-            $table->string('cube_image');
-            $table->timestamps();
+        Schema::table('cubes', function (Blueprint $table) {
+            $table->foreignId('tag_id')->after('name')->nullable()->constrained();
+
         });
     }
 
@@ -24,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cubes');
+        Schema::table('cubes', function (Blueprint $table) {
+            $table->dropConstrainedForeignId('tag_id');
+        });
     }
 };
