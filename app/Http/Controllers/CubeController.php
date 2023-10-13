@@ -41,16 +41,18 @@ class CubeController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'difficulty' => 'required',
+//            'difficulty' => 'required',
             'year' => 'required',
             'description' => 'required',
+            'image' => 'required'
         ]);
 
         $cube = new Cube;
         $cube->name = $request->input('name');
-        $cube->difficulty = $request->input('difficulty');
+//        $cube->difficulty = $request->input('difficulty');
         $cube->year = $request->input('year');
         $cube->description = $request->input('description');
+        $cube->cube_image = $request->input('image');
         $cube->save();
 
         return redirect()->back()->with([

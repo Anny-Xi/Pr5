@@ -8,6 +8,6 @@ class WelcomeController extends Controller
     {
         $todayDate = date("d.m.Y");
         return view('welcomePage', compact('todayDate'));//,'name'
-        /* Here will the welcomPage.blad.php return to the view*/
+        /* Here will the welcome Page.blad.php return to the view*/
     }
 }

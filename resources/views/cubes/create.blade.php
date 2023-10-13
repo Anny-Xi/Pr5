@@ -30,19 +30,19 @@
                                     </div>
                                 </div>
 
-                                <div class="row mb-3">
-                                    <label for="difficulty" class="col-md-4 col-form-label text-md-end">{{ __('Difficulty') }}</label>
+{{--                                <div class="row mb-3">--}}
+{{--                                    <label for="difficulty" class="col-md-4 col-form-label text-md-end">{{ __('Difficulty') }}</label>--}}
 
-                                    <div class="col-md-6">
-                                        <input id="difficulty" type="number" class="form-control @error('difficulty') is-invalid @enderror" name="difficulty"  >
+{{--                                    <div class="col-md-6">--}}
+{{--                                        <input id="difficulty" type="number" class="form-control @error('difficulty') is-invalid @enderror" name="difficulty"  >--}}
 
-                                        @error('difficulty')
-                                        <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                        @enderror
-                                    </div>
-                                </div>
+{{--                                        @error('difficulty')--}}
+{{--                                        <span class="invalid-feedback" role="alert">--}}
+{{--                                        <strong>{{ $message }}</strong>--}}
+{{--                                    </span>--}}
+{{--                                        @enderror--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
 
                                 <div class="row mb-3">
                                     <label for="year" class="col-md-4 col-form-label text-md-end">{{ __('Year') }}</label>
@@ -61,9 +61,22 @@
                                     <label for="description" class="col-md-4 col-form-label text-md-end">{{ __('Description') }}</label>
 
                                     <div class="col-md-6">
-                                        <input id="description" type="number" class="form-control @error('description') is-invalid @enderror" name="description">
+                                        <input id="description" type="text" class="form-control @error('description') is-invalid @enderror" name="description">
 
                                         @error('description')
+                                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="description" class="col-md-4 col-form-label text-md-end">{{ __('Image') }}</label>
+
+                                    <div class="col-md-6">
+                                        <input id="description" type="text" class="form-control @error('image') is-invalid @enderror" name="image">
+
+                                        @error('image')
                                         <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
