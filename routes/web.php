@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\CubeController;
 use Illuminate\Support\Facades\Route;
@@ -25,3 +26,5 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/cubes', [CubeController::class, 'index'])->name('cubes.index');
 Route::get('/cubes/create', [CubeController::class, 'create'])->name('cubes.create');
 Route::post('/cube/store', [CubeController::class, 'store'])->name('cubes.store');
+Route::get('/tags/create', [TagController::class, 'create'])->name('tags.create');
+Route::post('/cube/store', [TagController::class, 'store'])->name('tags.store');
