@@ -33,7 +33,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('cubes.create') }}">Upload a new cube</a>
+                            <a class="nav-link" href="{{ route('cubes.index') }}">View all Cubes</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Search for a cube</a>

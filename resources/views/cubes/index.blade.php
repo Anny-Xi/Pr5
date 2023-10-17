@@ -13,29 +13,29 @@
     <table class="table table-bordered table-striped">
         <thead>
         <tr>
+            <th>Cube ID</th>
             <th>Cube name</th>
-            <th>Difficulty</th>
-            <th>Year</th>
+            <th>Description</th>
             <th>Image</th>
         </tr>
         </thead>
         <tbody>
-{{--        @foreach ($recipes as $recipes)--}}
-{{--            <tr>--}}
-{{--                <td>{{ $recipes->name }}</td>--}}
-{{--                <td>{{ $recipes->origin }}</td>--}}
-{{--                <td>{{ $recipes->ingredients }}</td>--}}
-{{--                <td>{{ $recipes->instructions }}</td>--}}
+        @foreach ($cubes as $cubes)
+            <tr>
+                <td>{{ $cubes->id }}</td>
+                <td>{{ $cubes->name }}</td>
+                <td>{{ $cubes->description }}</td>
+                <td>{{ $cubes->cube_image }}</td>
 {{--                <td>--}}
-{{--                    --}}{{--          <a href = '/recipes/delete/{{ $recipes->id }}'>Delete</a>--}}
-{{--                    <form action="{{ route('recipes.destroy', $recipes->id) }}" method="POST">--}}
+{{--                              <a href = '/recipes/delete/{{ $cubes->id }}'>Delete</a>--}}
+{{--                    <form action="{{ route('recipes.destroy', $cubes->id) }}" method="POST">--}}
 {{--                        @csrf--}}
 {{--                        @method('DELETE')--}}
 {{--                        <button type="submit">DELETE</button>--}}
 {{--                    </form>--}}
 {{--                </td>--}}
-{{--            </tr>--}}
-{{--        @endforeach--}}
+            </tr>
+        @endforeach
         </tbody>
     </table>
     <td><button onclick="location.href='{{ route('cubes.create') }}'">

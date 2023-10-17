@@ -12,15 +12,12 @@ class CubeController extends Controller
      */
     public function index()
     {
-//        if (request('search')) {
-//            $recipes = Recipe::where('name', 'like', '%' . request('search') . '%')->get();
-//        } else {
-//            $recipes = Recipe::all();
-//        }
-//
-//
-//        return view('recipes.index', ['recipes' => $recipes]);
-        return view('cubes.index');
+        if (request('search')) {
+            $cubes = Cube::where('name', 'like', '%' . request('search') . '%')->get();
+        } else {
+            $cubes = Cube::all();
+        }
+        return view('cubes.index',['cubes'=>$cubes]);
 
     }
 
@@ -42,7 +39,7 @@ class CubeController extends Controller
         $request->validate([
             'name' => 'required',
 //            'difficulty' => 'required',
-            'year' => 'required',
+//            'year' => 'required',
             'description' => 'required',
             'image' => 'required'
         ]);
@@ -50,13 +47,13 @@ class CubeController extends Controller
         $cube = new Cube;
         $cube->name = $request->input('name');
 //        $cube->difficulty = $request->input('difficulty');
-        $cube->year = $request->input('year');
+//        $cube->year = $request->input('year');
         $cube->description = $request->input('description');
         $cube->cube_image = $request->input('image');
         $cube->save();
 
         return redirect()->back()->with([
-            'message' => 'Recipe added successfully!',
+            'message' => 'Cube added to gallery!',
             'status' => 'success'
         ]);
     }

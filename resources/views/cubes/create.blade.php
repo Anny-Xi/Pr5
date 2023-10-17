@@ -10,7 +10,12 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header">{{ __('Upload your cube') }}</div>
-
+                        @if(session('message'))
+                            <div class="alert alert-{{ session('status') }} alert-dismissible fade show mt-3" role="alert">
+                                <strong>{{ session('message') }}</strong>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
                         <div class="card-body">
                             <form method="POST" action="{{ route('cubes.store') }}">
                                 @csrf
@@ -44,19 +49,19 @@
 {{--                                    </div>--}}
 {{--                                </div>--}}
 
-                                <div class="row mb-3">
-                                    <label for="year" class="col-md-4 col-form-label text-md-end">{{ __('Year') }}</label>
+{{--                                <div class="row mb-3">--}}
+{{--                                    <label for="year" class="col-md-4 col-form-label text-md-end">{{ __('Year') }}</label>--}}
 
-                                    <div class="col-md-6">
-                                        <input id="year" type="number" class="form-control @error('year') is-invalid @enderror" name="year"  >
+{{--                                    <div class="col-md-6">--}}
+{{--                                        <input id="year" type="number" class="form-control @error('year') is-invalid @enderror" name="year"  >--}}
 
-                                        @error('year')
-                                        <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                        @enderror
-                                    </div>
-                                </div>
+{{--                                        @error('year')--}}
+{{--                                        <span class="invalid-feedback" role="alert">--}}
+{{--                                        <strong>{{ $message }}</strong>--}}
+{{--                                    </span>--}}
+{{--                                        @enderror--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
                                 <div class="row mb-3">
                                     <label for="description" class="col-md-4 col-form-label text-md-end">{{ __('Description') }}</label>
 
