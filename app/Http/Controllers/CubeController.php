@@ -92,3 +92,4 @@ class CubeController extends Controller
 
         return redirect('cubes.index')->with('success','Data deleted');
     }
+}
