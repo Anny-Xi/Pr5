@@ -9,6 +9,12 @@
 
 {{--    Here comes a search engine and a filter--}}
 
+    @if(session('success'))
+        <div class="alert alert-{{ session('status') }} alert-dismissible fade show mt-3" role="alert">
+            <strong>{{ session('success') }}</strong>
+            <button type="button" class="btn-close btn-danger" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
     <table class="table table-bordered table-striped">
         <thead>
@@ -27,7 +33,7 @@
                 <td>{{ $cube->description }}</td>
                 <td>{{ $cube->cube_image }}</td>
                 <td>
-{{--                    <a href = '{{ route('cubes.edit', $cubes->id)}}' class="btn btn-success">EDIT</a>--}}
+                    <a href = '{{ route('cubes.edit', $cube->id)}}' class="btn btn-success">EDIT</a>
                     <form action="{{ route('cubes.destroy', $cube->id) }}" method="POST">
                         @csrf
                         @method('DELETE')

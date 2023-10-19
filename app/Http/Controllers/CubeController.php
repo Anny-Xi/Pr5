@@ -71,7 +71,7 @@ class CubeController extends Controller
      */
     public function edit(Cube $cube)
     {
-        //
+        return view('cubes.edit',compact('cube'));
     }
 
     /**
@@ -85,11 +85,11 @@ class CubeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Cube $cube)
+    public function destroy($cube)
     {
-        $theCube = Cube::findOrFail($cube->id);
+        $theCube = Cube::where('id',$cube)->first();
         $theCube->delete();
 
-        return redirect('cubes.index')->with('success','Cube deleted');
+        return redirect('cubes')->with('success','Cube deleted');
     }
 }
