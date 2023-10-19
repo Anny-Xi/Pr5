@@ -87,6 +87,9 @@ class CubeController extends Controller
      */
     public function destroy(Cube $cube)
     {
-        //
+        $theCube = Cube::find($cube->id);
+        $theCube->delete();
+
+        return redirect('cubes.index')->with('success','Data deleted');
     }
 }
