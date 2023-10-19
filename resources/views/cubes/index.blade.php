@@ -1,4 +1,4 @@
-@extends('layouts.app')
+{{--@extends('layouts.app')--}}
 
 @section('content')
 
@@ -9,6 +9,11 @@
 
 {{--    Here comes a search engine and a filter--}}
 
+    @if(\Session::has('success'))
+        <div class="alert alert-danger">
+            <h4>{{\Session::get('success')}}</h4>
+        </div>
+    @endif
 
     <table class="table table-bordered table-striped">
         <thead>
@@ -20,20 +25,20 @@
         </tr>
         </thead>
         <tbody>
-        @foreach ($cubes as $cubes)
+        @foreach ($cubes as $cube)
             <tr>
-                <td>{{ $cubes->id }}</td>
-                <td>{{ $cubes->name }}</td>
-                <td>{{ $cubes->description }}</td>
-                <td>{{ $cubes->cube_image }}</td>
-{{--                <td>--}}
-{{--                              <a href = '/recipes/delete/{{ $cubes->id }}'>Delete</a>--}}
-{{--                    <form action="{{ route('recipes.destroy', $cubes->id) }}" method="POST">--}}
-{{--                        @csrf--}}
-{{--                        @method('DELETE')--}}
-{{--                        <button type="submit">DELETE</button>--}}
-{{--                    </form>--}}
-{{--                </td>--}}
+                <td>{{ $cube->id }}</td>
+                <td>{{ $cube->name }}</td>
+                <td>{{ $cube->description }}</td>
+                <td>{{ $cube->cube_image }}</td>
+                <td>
+                    <a href = '{{ route('cubes.edit', $cubes->id)}}' class="btn btn-success">EDIT</a>
+                    <form action="{{ route('cubes.destroy', $cubes->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">DELETE</button>
+                    </form>
+                </td>
             </tr>
         @endforeach
         </tbody>
