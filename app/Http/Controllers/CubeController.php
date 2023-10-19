@@ -87,13 +87,8 @@ class CubeController extends Controller
      */
     public function destroy(Cube $cube)
     {
-<<<<<<< Updated upstream
-        $theCube = Cube::find($cube->id);
-=======
         $theCube = Cube::findOrFail($cube->id);
->>>>>>> Stashed changes
         $theCube->delete();
 
         return redirect('cubes.index')->with('success','Data deleted');
     }
-}
