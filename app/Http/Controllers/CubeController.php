@@ -90,6 +90,6 @@ class CubeController extends Controller
         $theCube = Cube::findOrFail($cube->id);
         $theCube->delete();
 
-        return redirect('cubes.index')->with('success','Data deleted');
+        return redirect('cubes.index')->with('success','Cube deleted');
     }
 }

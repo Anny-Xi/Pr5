@@ -20,20 +20,20 @@
         </tr>
         </thead>
         <tbody>
-        @foreach ($cubes as $cubes)
+        @foreach ($cubes as $cube)
             <tr>
-                <td>{{ $cubes->id }}</td>
-                <td>{{ $cubes->name }}</td>
-                <td>{{ $cubes->description }}</td>
-                <td>{{ $cubes->cube_image }}</td>
-{{--                <td>--}}
-{{--                              <a href = '/recipes/delete/{{ $cubes->id }}'>Delete</a>--}}
-{{--                    <form action="{{ route('recipes.destroy', $cubes->id) }}" method="POST">--}}
-{{--                        @csrf--}}
-{{--                        @method('DELETE')--}}
-{{--                        <button type="submit">DELETE</button>--}}
-{{--                    </form>--}}
-{{--                </td>--}}
+                <td>{{ $cube->id }}</td>
+                <td>{{ $cube->name }}</td>
+                <td>{{ $cube->description }}</td>
+                <td>{{ $cube->cube_image }}</td>
+                <td>
+{{--                    <a href = '{{ route('cubes.edit', $cubes->id)}}' class="btn btn-success">EDIT</a>--}}
+                    <form action="{{ route('cubes.destroy', $cube->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">DELETE</button>
+                    </form>
+                </td>
             </tr>
         @endforeach
         </tbody>
