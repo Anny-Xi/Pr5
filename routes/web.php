@@ -23,10 +23,12 @@ Route::get('/', [WelcomeController::class,'index']);
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+
 Route::get('/cubes', [CubeController::class, 'index'])->name('cubes.index');
 Route::get('/cubes/create', [CubeController::class, 'create'])->name('cubes.create');
+Route::get('/cubes/{id}/edit', [CubeController::class, 'edit'])->name('cubes.edit');
 Route::post('/cubes/store', [CubeController::class, 'store'])->name('cubes.store');
-Route::post('/cubes/edit', [CubeController::class, 'edit'])->name('cubes.edit');
-Route::post('/cubes/destroy', [CubeController::class, 'destroy'])->name('cubes.destroy');
+Route::delete('/cubes/{id}', [CubeController::class, 'destroy'])->name('cubes.destroy');
+
 Route::get('/tags/create', [TagController::class, 'create'])->name('tags.create');
 Route::post('/tags/store', [TagController::class, 'store'])->name('tags.store');

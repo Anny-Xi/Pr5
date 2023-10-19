@@ -1,4 +1,4 @@
-{{--@extends('layouts.app')--}}
+@extends('layouts.app')
 
 @section('content')
 
@@ -9,9 +9,10 @@
 
 {{--    Here comes a search engine and a filter--}}
 
-    @if(\Session::has('success'))
-        <div class="alert alert-danger">
-            <h4>{{\Session::get('success')}}</h4>
+    @if(session('success'))
+        <div class="alert alert-{{ session('status') }} alert-dismissible fade show mt-3" role="alert">
+            <strong>{{ session('success') }}</strong>
+            <button type="button" class="btn-close btn-danger" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
 
@@ -32,8 +33,8 @@
                 <td>{{ $cube->description }}</td>
                 <td>{{ $cube->cube_image }}</td>
                 <td>
-                    <a href = '{{ route('cubes.edit', $cubes->id)}}' class="btn btn-success">EDIT</a>
-                    <form action="{{ route('cubes.destroy', $cubes->id) }}" method="POST">
+                    <a href = '{{ route('cubes.edit', $cube->id)}}' class="btn btn-success">EDIT</a>
+                    <form action="{{ route('cubes.destroy', $cube->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">DELETE</button>
