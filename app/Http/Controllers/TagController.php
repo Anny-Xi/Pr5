@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cube;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 
@@ -12,15 +13,12 @@ class TagController extends Controller
      */
     public function index()
     {
-//        if (request('search')) {
-//            $recipes = Recipe::where('name', 'like', '%' . request('search') . '%')->get();
-//        } else {
-//            $recipes = Recipe::all();
-//        }
-//
-//
-//        return view('recipes.index', ['recipes' => $recipes]);
-        return view('tags.index');
+        if (request('search')) {
+            $tags = Tag::where('name', 'like', '%' . request('search') . '%')->get();
+        } else {
+            $tags = Tag::all();
+        }
+        return view('tags.index.index',['tags'=>$tags]);
 
     }
 
@@ -29,7 +27,6 @@ class TagController extends Controller
      */
     public function create()
     {
-//        dd();
         return view('tags.create');
 
     }
@@ -56,7 +53,7 @@ class TagController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Cube $cube)
+    public function show(Tag $tag)
     {
         //
     }
@@ -64,7 +61,7 @@ class TagController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Cube $cube)
+    public function edit(Tag $tag)
     {
         //
     }
@@ -72,7 +69,7 @@ class TagController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Cube $cube)
+    public function update(Request $request, Tag $tag)
     {
         //
     }
@@ -80,8 +77,11 @@ class TagController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Cube $cube)
+    public function destroy(Tag $tag)
     {
-        //
+        $theTag = Tag::where('id',$tag)->first();
+        $theTag->delete();
+
+        return redirect('tags')->with('success','Tag deleted');
     }
 }

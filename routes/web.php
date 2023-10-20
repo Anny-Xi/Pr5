@@ -30,5 +30,7 @@ Route::get('/cubes/{id}/edit', [CubeController::class, 'edit'])->name('cubes.edi
 Route::post('/cubes/store', [CubeController::class, 'store'])->name('cubes.store');
 Route::delete('/cubes/{id}', [CubeController::class, 'destroy'])->name('cubes.destroy');
 
+
 Route::get('/tags/create', [TagController::class, 'create'])->name('tags.create');
 Route::post('/tags/store', [TagController::class, 'store'])->name('tags.store');
+Route::delete('/tags/{id}', [TagController::class, 'destroy'])->name('tags.destroy');
