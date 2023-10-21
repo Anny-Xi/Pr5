@@ -36,6 +36,9 @@
                             <a class="nav-link" href="{{ route('cubes.index') }}">View all Cubes</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('tags.index') }}">View all Tags</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="#">Search for a cube</a>
                         </li>
                     </ul>
@@ -62,15 +65,23 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
+                                    <div class="">
+                                        <a class="dropdown-item" href="#">
+                                            {{ __('User list') }}
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+                                            {{ __('Logout') }}
+                                        </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                            @csrf
+                                        </form>
+                                    </div>
+
                                 </div>
                             </li>
                         @endguest

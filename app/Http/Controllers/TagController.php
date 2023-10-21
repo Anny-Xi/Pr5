@@ -18,7 +18,7 @@ class TagController extends Controller
         } else {
             $tags = Tag::all();
         }
-        return view('tags.index.index',['tags'=>$tags]);
+        return view('tags.index',['tags'=>$tags]);
 
     }
 
@@ -37,11 +37,13 @@ class TagController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'name' => 'required',
+            'description' => 'required',
         ]);
 
         $tag = new Tag;
         $tag->name = $request->input('name');
+        $tag->description = $request->input('description');
         $tag->save();
 
         return redirect()->back()->with([
@@ -77,7 +79,7 @@ class TagController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Tag $tag)
+    public function destroy($tag)
     {
         $theTag = Tag::where('id',$tag)->first();
         $theTag->delete();

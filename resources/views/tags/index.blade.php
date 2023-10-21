@@ -18,9 +18,9 @@
         <table class="table table-bordered table-striped">
             <thead>
             <tr>
-                <th>tag ID</th>
-                <th>Tag</th>
-                <th>Description</th>
+                <th>Tag ID</th>
+                <th>Tag name</th>
+                <th>Tag description</th>
             </tr>
             </thead>
             <tbody>
@@ -28,6 +28,7 @@
                 <tr>
                     <td>{{ $tag->id }}</td>
                     <td>{{ $tag->name }}</td>
+                    <td>{{ $tag->description }}</td>
                     <td>
 {{--                        <a href = '{{ route('tags.edit', $tag->id)}}' class="btn btn-success">EDIT</a>--}}
                         <form action="{{ route('tags.destroy', $tag->id) }}" method="POST">
@@ -41,7 +42,7 @@
             </tbody>
         </table>
         <td><button onclick="location.href='{{ route('tags.create') }}'">
-                Add cube</button></td>
+                Add tag</button></td>
 
 
     </div>
