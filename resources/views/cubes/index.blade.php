@@ -33,6 +33,10 @@
                 <td>{{ $cube->description }}</td>
                 <td>{{ $cube->cube_image }}</td>
                 <td>
+                    @guest
+                        @if(Route::has('login') && Route::has('register'))
+                        @endif
+                    @else
                     <a href = '{{ route('cubes.edit', $cube->id)}}' class="btn btn-success">EDIT</a>
                     <form action="{{ route('cubes.destroy', $cube->id) }}" method="POST">
                         @csrf
@@ -40,6 +44,7 @@
                         <button type="submit" class="btn btn-danger">DELETE</button>
                     </form>
                 </td>
+                @endguest
             </tr>
         @endforeach
         </tbody>

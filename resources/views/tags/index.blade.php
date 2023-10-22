@@ -2,7 +2,6 @@
 
 @section('content')
 
-
     <div class="container">
 
         <h2 class="text-center">Tag for cubes</h2>
@@ -29,20 +28,30 @@
                     <td>{{ $tag->id }}</td>
                     <td>{{ $tag->name }}</td>
                     <td>{{ $tag->description }}</td>
-                    <td>
-{{--                        <a href = '{{ route('tags.edit', $tag->id)}}' class="btn btn-success">EDIT</a>--}}
-                        <form action="{{ route('tags.destroy', $tag->id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">DELETE</button>
-                        </form>
-                    </td>
+                    @guest
+                        @if(Route::has('login') && Route::has('register'))
+                        @endif
+                    @else
+                        <td>
+                            {{--                        <a href = '{{ route('tags.edit', $tag->id)}}' class="btn btn-success">EDIT</a>--}}
+                            <form action="{{ route('tags.destroy', $tag->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">DELETE</button>
+                            </form>
+                        </td>
+
+                    @endguest
                 </tr>
+
             @endforeach
             </tbody>
         </table>
-        <td><button onclick="location.href='{{ route('tags.create') }}'">
-                Add tag</button></td>
+        <td>
+            <button onclick="location.href='{{ route('tags.create') }}'">
+                Add tag
+            </button>
+        </td>
 
 
     </div>
