@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cube;
+use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CubeController extends Controller
 {
@@ -26,8 +28,18 @@ class CubeController extends Controller
      */
     public function create()
     {
-//        dd();
-        return view('cubes.create');
+        if (Auth::check()) {
+            $tags = Tag::all();
+//            print_r($tags);
+            return view('cubes.create',['tags'=>$tags]);
+        } else{
+            $this->middleware('auth');
+            return redirect()->back()->with([
+                'message' => 'Only user can add new cubes!',
+                'status' => 'danger'
+            ]);
+        }
+
 
     }
 
@@ -36,26 +48,37 @@ class CubeController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-//            'difficulty' => 'required',
-//            'year' => 'required',
-            'description' => 'required',
-            'image' => 'required'
-        ]);
+        if (!Auth::check()) {
+            $this->middleware('auth');
+            return redirect()->back()->with([
+                'message' => 'Only user can add new cubes!',
+                'status' => 'failed'
+            ]);
+        } else {
 
-        $cube = new Cube;
-        $cube->name = $request->input('name');
-//        $cube->difficulty = $request->input('difficulty');
-//        $cube->year = $request->input('year');
-        $cube->description = $request->input('description');
-        $cube->cube_image = $request->input('image');
-        $cube->save();
+            $request->validate([
+                'name' => 'required',
+                'difficulty' => 'required',
+                'description' => 'required',
+                'image' => 'required|image|mimes|max:1080'
+            ]);
+            $imagePath = $request->file('image')->store('public/images');
+            $tagId = Tag::where('name', $request->input('difficulty'))->first();
 
-        return redirect()->back()->with([
-            'message' => 'Cube added to gallery!',
-            'status' => 'success'
-        ]);
+            $cube = new Cube;
+            $cube->name = $request->input('name');
+            $cube->tag_id = $tagId->id;
+            $cube->description = $request->input('description');
+            $cube->cube_image = $imagePath;
+            dd($cube);
+
+            $cube->save();
+
+            return redirect()->back()->with([
+                'message' => 'Cube added to gallery!',
+                'status' => 'success'
+            ]);
+        }
     }
 
     /**

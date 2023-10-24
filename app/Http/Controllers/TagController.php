@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cube;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TagController extends Controller
 {
@@ -27,7 +28,16 @@ class TagController extends Controller
      */
     public function create()
     {
-        return view('tags.create');
+        if (Auth::check()) {
+            return view('tags.create');
+        } else{
+            $this->middleware('auth');
+            return redirect()->back()->with([
+                'message' => 'Only users can add new tags!',
+                'status' => 'danger'
+            ]);
+        }
+
 
     }
 
@@ -36,6 +46,14 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Auth::check()) {
+            $this->middleware('auth');
+            return redirect()->back()->with([
+                'message' => 'Only users can add new tags!',
+                'status' => 'danger'
+            ]);
+        }
+
         $request->validate([
             'name' => 'required',
             'description' => 'required',
@@ -81,9 +99,19 @@ class TagController extends Controller
      */
     public function destroy($tag)
     {
+        if (!Auth::check()) {
+            $this->middleware('auth');
+            return redirect()->back()->with([
+                'message' => 'Only users can delete tag!',
+                'status' => 'danger'
+            ]);
+        }
         $theTag = Tag::where('id',$tag)->first();
         $theTag->delete();
 
-        return redirect('tags')->with('success','Tag deleted');
+        return redirect('tags')->back()->with([
+            'message' => 'Tag delete succes!',
+            'status' => 'success'
+        ]);
     }
 }
