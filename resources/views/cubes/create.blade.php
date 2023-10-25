@@ -17,8 +17,9 @@
                         </div>
                     @endif
                     <div class="card-body">
-                        <form method="POST" action="{{ route('cubes.store') }}">
+                        <form method="POST" action="{{ route('cubes.store') }}" enctype="multipart/form-data">
                             @csrf
+
 
                             <div class="row mb-3">
                                 <label for="name"
@@ -45,7 +46,7 @@
 
                                 <div class="col-md-6">
                                     <input list="levels" class="form-control @error('difficulty') is-invalid @enderror"
-                                           name="difficulty">
+                                           name="difficulty" {{ old('difficulty') }}>
                                     <datalist id="levels">
                                         @foreach($tags as $tag)
                                             <option value="{{ $tag->name }}">

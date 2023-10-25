@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Cube;
 use App\Models\Tag;
+use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class CubeController extends Controller
 {
@@ -60,17 +62,19 @@ class CubeController extends Controller
                 'name' => 'required',
                 'difficulty' => 'required',
                 'description' => 'required',
-                'image' => 'required|image|mimes|max:1080'
+                'image' =>  'required|file|mimes:jpg,jpeg,png,gif|max:1024'
             ]);
             $imagePath = $request->file('image')->store('public/images');
             $tagId = Tag::where('name', $request->input('difficulty'))->first();
 
             $cube = new Cube;
+            $user_id = Auth::user()->id;
             $cube->name = $request->input('name');
+            $cube->user_id =$user_id;
             $cube->tag_id = $tagId->id;
             $cube->description = $request->input('description');
             $cube->cube_image = $imagePath;
-            dd($cube);
+//            dd($cube);
 
             $cube->save();
 
@@ -111,8 +115,30 @@ class CubeController extends Controller
     public function destroy($cube)
     {
         $theCube = Cube::where('id',$cube)->first();
-        $theCube->delete();
 
-        return redirect('cubes')->with('success','Cube deleted');
+        if ($theCube->user_id === auth()->id()) {
+
+            if (Storage::exists($theCube->cube_image)) {
+                Storage::delete($theCube->cube_image);
+                $theCube->delete();
+                $message = 'Cube deleted!';
+                $status = 'success';
+                
+            } else {
+                $message = 'Cube image cannot be defined!';
+                $status = 'danger';
+
+            }
+        }else{
+            $message = 'Only the owner can delete this cube';
+            $status = 'danger';
+        }
+
+
+        return redirect('cubes')->with(
+            [
+                'message' => $message,
+                'status' => $status
+            ]);
     }
 }

@@ -33,7 +33,9 @@
                             <td>{{ $cube->id }}</td>
                             <td>{{ $cube->name }}</td>
                             <td>{{ $cube->description }}</td>
-                            <td>{{ $cube->cube_image }}</td>
+                            <td><img src="{{ Storage::url($cube->cube_image) }}" class="w-25" alt="image for cube {{ $cube->name }}">
+                            </td>
+
                             <td>
                                 @guest
                                     @if(Route::has('login') && Route::has('register'))
