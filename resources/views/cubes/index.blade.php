@@ -33,23 +33,25 @@
                             <td>{{ $cube->id }}</td>
                             <td>{{ $cube->name }}</td>
                             <td>{{ $cube->description }}</td>
-                            <td><img src="{{ Storage::url($cube->cube_image) }}" class="w-25" alt="image for cube {{ $cube->name }}">
+                            <td><img src="{{ Storage::url($cube->cube_image) }}" class="w-25"
+                                     alt="image for cube {{ $cube->name }}">
                             </td>
 
-                            <td>
-                                @guest
-                                    @if(Route::has('login') && Route::has('register'))
-                                    @endif
-                                @else
+
+                            @guest
+                                @if(Route::has('login') && Route::has('register'))
+                                @endif
+                            @else
+                                <td>
                                     <a href='{{ route('cubes.edit', $cube->id)}}' class="btn btn-success">EDIT</a>
-                            </td>
-                            <td>
+                                </td>
+                                <td>
                                     <form action="{{ route('cubes.destroy', $cube->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">DELETE</button>
                                     </form>
-                            </td>
+                                </td>
                             @endguest
                         </tr>
                     @endforeach

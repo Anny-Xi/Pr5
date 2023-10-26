@@ -31,7 +31,6 @@ class CubeController extends Controller
     {
         if (Auth::check()) {
             $tags = Tag::all();
-//            print_r($tags);
             return view('cubes.create', ['tags' => $tags]);
         } else {
             $this->middleware('auth');
@@ -65,19 +64,19 @@ class CubeController extends Controller
             ]);
 
 
-
-            if (!Tag::where('name', $request->input('difficulty'))->first()) {
+            if (!$tag=Tag::where('name', $request->input('difficulty'))->first()) {
                 $message = 'Cube can not be added to gallery, Chose correct tag';
                 $status = 'danger';
 
             } else {
+
                 $imagePath = $request->file('image')->store('public/images');
 
                 $cube = new Cube;
                 $user_id = Auth::user()->id;
                 $cube->name = $request->input('name');
                 $cube->user_id = $user_id;
-                $cube->tag_id = $tagId->id;
+                $cube->tag_id = $tag->id;
                 $cube->description = $request->input('description');
                 $cube->cube_image = $imagePath;
                 $cube->save();
@@ -104,17 +103,58 @@ class CubeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Cube $cube)
+    public function edit($id)
     {
-        return view('cubes.edit', compact('cube'));
+        if (!Auth::check()) {
+            $this->middleware('auth');
+            return redirect('cube')->with([
+                'message' => 'Only user have right to open this page!',
+                'status' => 'failed'
+            ]);
+        }
+        $tags = Tag::all();
+        $cube = Cube::find($id);
+        $oldTag = Tag::where('id',$cube->tag_id)->first();
+        return view('cubes.edit', compact('cube'), ['tags' => $tags, 'tagName'=>$oldTag]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Cube $cube)
+    public function update(Request $request, $id)
     {
-        //
+
+        $request->validate([
+            'name' => 'required',
+            'difficulty' => 'required',
+            'description' => 'required',
+            'image' => 'required|file|mimes:jpg,jpeg,png,gif|max:1024'
+        ]);
+
+
+        if (!$tag=Tag::where('name', $request->input('difficulty'))->first()) {
+            $message = 'Cube can not be added to gallery, Chose correct tag';
+            $status = 'danger';
+
+        } else {
+
+            $cube = Cube::find($id);
+            $cube->name = $request->input('name');
+            $cube->tag_id = $tag->id;
+            $cube->description = $request->input('description');
+            $imagePath = $request->file('image')->store('public/images');
+            $cube->cube_image = $imagePath;
+            $cube->save();
+            $message = 'Cube updated!';
+            $status = 'success';
+
+        }
+
+        return redirect()->back()->with([
+            'message' => $message,
+            'status' => $status
+        ]);
+
     }
 
     /**

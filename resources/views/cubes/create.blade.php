@@ -46,7 +46,7 @@
 
                                 <div class="col-md-6">
                                     <input list="levels" class="form-control @error('difficulty') is-invalid @enderror"
-                                           name="difficulty" {{ old('difficulty') }}>
+                                           name="difficulty" value="{{ old('difficulty') }}" >
                                     <datalist id="levels">
                                         @foreach($tags as $tag)
                                             <option value="{{ $tag->name }}">
