@@ -64,7 +64,7 @@ class CubeController extends Controller
             ]);
 
 
-            if (!$tag=Tag::where('name', $request->input('difficulty'))->first()) {
+            if (!$tag = Tag::where('name', $request->input('difficulty'))->first()) {
                 $message = 'Cube can not be added to gallery, Chose correct tag';
                 $status = 'danger';
 
@@ -114,8 +114,24 @@ class CubeController extends Controller
         }
         $tags = Tag::all();
         $cube = Cube::find($id);
-        $oldTag = Tag::where('id',$cube->tag_id)->first();
-        return view('cubes.edit', compact('cube'), ['tags' => $tags, 'tagName'=>$oldTag]);
+        $oldTag = Tag::where('id', $cube->tag_id)->first();
+        return view('cubes.edit', compact('cube'), ['tags' => $tags, 'tagName' => $oldTag]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function editImage($id)
+    {
+        if (!Auth::check()) {
+            $this->middleware('auth');
+            return redirect('cube')->with([
+                'message' => 'Only user have right to open this page!',
+                'status' => 'failed'
+            ]);
+        }
+        $cube = Cube::find($id);
+        return view('cubes.editImage', compact('cube'));
     }
 
     /**
@@ -132,7 +148,7 @@ class CubeController extends Controller
         ]);
 
 
-        if (!$tag=Tag::where('name', $request->input('difficulty'))->first()) {
+        if (!$tag = Tag::where('name', $request->input('difficulty'))->first()) {
             $message = 'Cube can not be added to gallery, Chose correct tag';
             $status = 'danger';
 
@@ -149,6 +165,31 @@ class CubeController extends Controller
             $status = 'success';
 
         }
+
+        return redirect()->back()->with([
+            'message' => $message,
+            'status' => $status
+        ]);
+
+    }
+
+    /**
+     * Update the image resource in storage.
+     */
+    public function updateImage(Request $request, $id)
+    {
+
+        $request->validate([
+            'image' => 'required|file|mimes:jpg,jpeg,png,gif|max:1024'
+        ]);
+        $cube = Cube::find($id);
+        Storage::delete($cube->cube_image);
+        $imagePath = $request->file('image')->store('public/images');
+        $cube->cube_image = $imagePath;
+        $cube->save();
+        $message = 'Cube updated!';
+        $status = 'success';
+
 
         return redirect()->back()->with([
             'message' => $message,

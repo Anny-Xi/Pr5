@@ -46,6 +46,9 @@
                                     <a href='{{ route('cubes.edit', $cube->id)}}' class="btn btn-success">EDIT</a>
                                 </td>
                                 <td>
+                                    <a href='{{ route('cubes.editImage', $cube->id)}}' class="btn btn-primary">EDIT IMAGE</a>
+                                </td>
+                                <td>
                                     <form action="{{ route('cubes.destroy', $cube->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')

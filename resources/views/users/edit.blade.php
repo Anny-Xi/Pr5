@@ -9,7 +9,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
-                        <div class="card-header">{{ __('Upload your cube') }}</div>
+                        <div class="card-header">{{ __('Update you profile') }}</div>
                         @if(session('message'))
                             <div class="alert alert-{{ session('status') }} alert-dismissible fade show mt-3" role="alert">
                                 <strong>{{ session('message') }}</strong>
@@ -36,26 +36,12 @@
                                 </div>
 
                                 <div class="row mb-3">
-                                    <label for="description" class="col-md-4 col-form-label text-md-end">{{ __('Description') }}</label>
+                                    <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email') }}</label>
 
                                     <div class="col-md-6">
-                                        <input id="description" type="text" class="form-control @error('description') is-invalid @enderror" name="description">
+                                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email">
 
-                                        @error('description')
-                                        <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <label for="description" class="col-md-4 col-form-label text-md-end">{{ __('Image') }}</label>
-
-                                    <div class="col-md-6">
-                                        <input id="description" type="text" class="form-control @error('image') is-invalid @enderror" name="image">
-
-                                        @error('image')
+                                        @error('email')
                                         <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -66,7 +52,7 @@
                                 <div class="row mb-0">
                                     <div class="col-md-8 offset-md-4">
                                         <button type="submit" class="btn btn-primary">
-                                            {{ __('Update the cube') }}
+                                            {{ __('Update your profile) }}
                                         </button>
                                     </div>
                                 </div>

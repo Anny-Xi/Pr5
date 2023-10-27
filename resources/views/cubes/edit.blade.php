@@ -76,25 +76,6 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="row mb-3">
-                                <label for="description"
-                                       class="col-md-4 col-form-label text-md-end">{{ __('Image') }}</label>
-                                <div class="col-md-6">
-                                    <img src="{{ Storage::url($cube->cube_image) }}" class="w-25"
-                                         alt="image for cube {{ $cube->name }}">
-                                    <input id="description" type="file"
-                                           class="form-control @error('image') is-invalid @enderror" name="image"
-                                           value="{{ Storage::url($cube->cube_image) }}">
-
-                                    @error('image')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-
-                                </div>
-
-                            </div>
 
                             <div class="row mb-0">
                                 <div class="col-md-8 offset-md-4">
