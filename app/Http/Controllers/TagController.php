@@ -6,7 +6,6 @@ use App\Models\Cube;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use const http\Client\Curl\Versions\CURL;
 
 class TagController extends Controller
 {
@@ -20,7 +19,7 @@ class TagController extends Controller
         } else {
             $tags = Tag::all();
         }
-        return view('tags.index',['tags'=>$tags]);
+        return view('tags.index', ['tags' => $tags]);
 
     }
 
@@ -29,16 +28,15 @@ class TagController extends Controller
      */
     public function create()
     {
-        if (Auth::check() && Cube::where('user_id',Auth::user()->id)->get()->count()>=3 ||Auth::user()->role===1) {
+        if (Auth::check() && Cube::where('user_id', Auth::user()->id)->get()->count() >= 3 || Auth::user()->role === 1) {
             return view('tags.create');
-        } else{
+        } else {
             $this->middleware('auth');
             return redirect()->back()->with([
                 'message' => 'Only users who has create 3 cubes can add new tags!',
                 'status' => 'danger'
             ]);
         }
-
 
     }
 
@@ -56,8 +54,8 @@ class TagController extends Controller
         }
 
         $request->validate([
-            'name' => 'required',
-            'description' => 'required',
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string', 'max:1080'],
         ]);
 
         $tag = new Tag;
@@ -71,29 +69,6 @@ class TagController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Tag $tag)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Tag $tag)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Tag $tag)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -107,7 +82,7 @@ class TagController extends Controller
                 'status' => 'danger'
             ]);
         }
-        $theTag = Tag::where('id',$tag)->first();
+        $theTag = Tag::where('id', $tag)->first();
         $theTag->delete();
 
         return redirect('tags')->back()->with([

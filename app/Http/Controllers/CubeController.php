@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Cube;
 use App\Models\Tag;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -19,11 +18,11 @@ class CubeController extends Controller
         $tags = Tag::all();
         if (request('search')) {
             $cubes = Cube::where('name', 'like', '%' . request('search') . '%')
-                    ->orwhere('description', 'like', '%' . request('search') . '%')
-                ->where('is_enable',1)
+                ->orwhere('description', 'like', '%' . request('search') . '%')
+                ->where('is_enable', 1)
                 ->get();
         } else {
-            $cubes = Cube::all()->where('is_enable',1);
+            $cubes = Cube::all()->where('is_enable', 1);
         }
         return view('cubes.index', ['cubes' => $cubes, 'tags' => $tags]);
 
@@ -62,9 +61,10 @@ class CubeController extends Controller
         } else {
 
             $request->validate([
-                'name' => 'required',
+
+                'name' => ['required', 'string', 'max:255'],
+                'description' => ['required', 'string', 'max:1080'],
                 'difficulty' => 'required',
-                'description' => 'required',
                 'image' => 'required|file|mimes:jpg,jpeg,png,gif|max:1024'
             ]);
 
@@ -98,7 +98,6 @@ class CubeController extends Controller
     }
 
 
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -114,9 +113,9 @@ class CubeController extends Controller
         $tags = Tag::all();
         $cube = Cube::find($id);
         $oldTag = Tag::where('id', $cube->tag_id)->first();
-        if (Auth::user()->id == $cube->user_id ||Auth::user()->role===1) {
+        if (Auth::user()->id == $cube->user_id || Auth::user()->role === 1) {
             return view('cubes.edit', compact('cube'), ['tags' => $tags, 'tagName' => $oldTag]);
-        }else{
+        } else {
             return redirect('cubes')->with([
                 'message' => 'Only owner has right to edit this cube!',
                 'status' => 'danger'
@@ -138,9 +137,9 @@ class CubeController extends Controller
         }
         $cube = Cube::find($id);
 
-        if (Auth::user()->id == $cube->user_id ||Auth::user()->role===1) {
+        if (Auth::user()->id == $cube->user_id || Auth::user()->role === 1) {
             return view('cubes.editImage', compact('cube'));
-        }else{
+        } else {
             return redirect('cubes')->with([
                 'message' => 'Only owner has right to edit this cube!',
                 'status' => 'danger'
@@ -156,9 +155,9 @@ class CubeController extends Controller
     {
 
         $request->validate([
-            'name' => 'required',
-            'difficulty' => 'required',
-            'description' => 'required'
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string', 'max:1080'],
+            'difficulty' => 'required'
         ]);
 
 
@@ -217,7 +216,7 @@ class CubeController extends Controller
     {
         $theCube = Cube::where('id', $cube)->first();
 
-        if ($theCube->user_id == Auth::user()->id ||Auth::user()->role===1) {
+        if ($theCube->user_id == Auth::user()->id || Auth::user()->role === 1) {
 
             if (Storage::exists($theCube->cube_image)) {
                 Storage::delete($theCube->cube_image);

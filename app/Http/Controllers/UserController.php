@@ -23,19 +23,19 @@ class UserController extends Controller
         $user = User::where('id', Auth::user()->id)->get();
         $userCubes = Cube::where('user_id', Auth::user()->id)->get();
         $allCubes = Cube::all();
-        if(Auth::user()->role==1){
+        if (Auth::user()->role == 1) {
             $cubes = $allCubes;
-        }else{
+        } else {
             $cubes = $userCubes;
         }
 
-        return view('users.index', ['user' => $user, 'cubes' => $cubes, 'allCubes' =>$allCubes]);
+        return view('users.index', ['user' => $user, 'cubes' => $cubes, 'allCubes' => $allCubes]);
 
     }
 
     public function showUsers()
     {
-        $user = User::where('role','0')->get();
+        $user = User::where('role', '0')->get();
 
         if (!Auth::check() || !Auth::user()->role) {
             $this->middleware('auth');
@@ -72,8 +72,8 @@ class UserController extends Controller
     {
 
         $request->validate([
-            'name' => 'required',
-            'email' => 'required'
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users']
         ]);
 
 
@@ -92,9 +92,10 @@ class UserController extends Controller
 
     }
 
-    public function enableCube($id){
+    public function enableCube($id)
+    {
         $cube = Cube::find($id);
-        $cube->is_enable= $cube->is_enable === 1 ? 0 : 1;
+        $cube->is_enable = $cube->is_enable === 1 ? 0 : 1;
         $cube->save();
         return redirect()->back()->with([
             'message' => 'Cube updated',
