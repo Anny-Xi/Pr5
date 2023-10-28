@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('cubes', function (Blueprint $table) {
-            $table->foreignId('user_id')->after('name')->nullable()->constrained()->nullOnDelete();;
+            $table->dropConstrainedForeignId('category_id');
         });
+        Schema::drop('categories');
     }
 
     /**
@@ -21,8 +22,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('cubes', function (Blueprint $table) {
-            $table->dropConstrainedForeignId('user_id');
+        Schema::create('categories', function (Blueprint $table) {
+            $table->id();
+            $table->string('name',100);
+            $table->timestamps();
+            $table->foreignId('category_id')->after('name')->nullable()->constrained();
         });
     }
 };

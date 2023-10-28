@@ -3,21 +3,49 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cube;
-use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $user = User::where('id',Auth::user()->id);
+        $user = User::where('id', Auth::user()->id)->get();
+        $userCubes = Cube::where('user_id', Auth::user()->id)->get();
+        $allCubes = Cube::all();
+        if(Auth::user()->role==1){
+            $cubes = $allCubes;
+        }else{
+            $cubes = $userCubes;
+        }
 
-        return view('users.index', ['cubes' => $user]);
+        return view('users.index', ['user' => $user, 'cubes' => $cubes, 'allCubes' =>$allCubes]);
+
+    }
+
+    public function showUsers()
+    {
+        $user = User::where('role','0')->get();
+
+        if (!Auth::check() || !Auth::user()->role) {
+            $this->middleware('auth');
+            return redirect('/home')->with([
+                'message' => 'You dont have right to open this page!',
+                'status' => 'danger'
+            ]);
+        }
+
+        return view('users.usersList', ['user' => $user]);
 
     }
 
@@ -28,12 +56,12 @@ class UserController extends Controller
     {
         if (!Auth::check()) {
             $this->middleware('auth');
-            return redirect('cube')->with([
+            return redirect('/')->with([
                 'message' => 'Only user have right to open this page!',
                 'status' => 'failed'
             ]);
         }
-        $user = User::find($id);
+        $user = User::where('id', $id)->first();
         return view('users.edit', compact('user'));
     }
 
@@ -45,19 +73,16 @@ class UserController extends Controller
 
         $request->validate([
             'name' => 'required',
-            ''
+            'email' => 'required'
         ]);
 
 
-            $cube = Cube::find($id);
-            $cube->name = $request->input('name');
-            $cube->description = $request->input('description');
-            $imagePath = $request->file('image')->store('public/images');
-            $cube->cube_image = $imagePath;
-            $cube->save();
-            $message = 'Cube updated!';
-            $status = 'success';
-
+        $user = User::find($id);
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->save();
+        $message = 'User updated!';
+        $status = 'success';
 
 
         return redirect()->back()->with([
@@ -66,4 +91,34 @@ class UserController extends Controller
         ]);
 
     }
+
+    public function enableCube($id){
+        $cube = Cube::find($id);
+        $cube->is_enable= $cube->is_enable === 1 ? 0 : 1;
+        $cube->save();
+        return redirect()->back()->with([
+            'message' => 'Cube updated',
+            'status' => 'success'
+        ]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
+    {
+        $theUser = User::where('id', $id)->first();
+
+        $theUser->delete();
+        $message = 'User deleted!';
+        $status = 'success';
+
+
+        return redirect('cubes')->with(
+            [
+                'message' => $message,
+                'status' => $status
+            ]);
+    }
+
 }

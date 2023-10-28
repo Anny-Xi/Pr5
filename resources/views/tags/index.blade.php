@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Tags')
+
 @section('content')
 
     <div class="container">
@@ -20,7 +22,7 @@
                 <table class="table table-bordered table-striped">
                     <thead>
                     <tr>
-{{--                        <th>Tag ID</th>--}}
+                        {{--                        <th>Tag ID</th>--}}
                         <th>Tag name</th>
                         <th>Tag description</th>
                     </tr>
@@ -28,33 +30,24 @@
                     <tbody>
                     @foreach ($tags as $tag)
                         <tr>
-{{--                            <td>{{ $tag->id }}</td>--}}
                             <td>{{ $tag->name }}</td>
                             <td>{{ $tag->description }}</td>
-                            @guest
-                                @if(Route::has('login') && Route::has('register'))
-                                @endif
-                            @else
+                            @if(Auth::check() && Auth::user()->role)
                                 <td>
-                                    {{--                        <a href = '{{ route('tags.edit', $tag->id)}}' class="btn btn-success">EDIT</a>--}}
                                     <form action="{{ route('tags.destroy', $tag->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">DELETE</button>
                                     </form>
                                 </td>
+                            @endif
 
-                            @endguest
                         </tr>
 
                     @endforeach
                     </tbody>
                 </table>
-                <td>
-                    <button onclick="location.href='{{ route('tags.create') }}'">
-                        Add tag
-                    </button>
-                </td>
+                <a href='{{ route('tags.create') }}' class="btn btn-success text-uppercase">Add tag</a>
             </div>
         </div>
     </div>

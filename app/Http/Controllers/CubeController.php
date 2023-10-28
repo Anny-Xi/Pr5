@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cube;
 use App\Models\Tag;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -15,12 +16,16 @@ class CubeController extends Controller
      */
     public function index()
     {
+        $tags = Tag::all();
         if (request('search')) {
-            $cubes = Cube::where('name', 'like', '%' . request('search') . '%')->get();
+            $cubes = Cube::where('name', 'like', '%' . request('search') . '%')
+                    ->orwhere('description', 'like', '%' . request('search') . '%')
+                ->where('is_enable',1)
+                ->get();
         } else {
-            $cubes = Cube::all();
+            $cubes = Cube::all()->where('is_enable',1);
         }
-        return view('cubes.index', ['cubes' => $cubes]);
+        return view('cubes.index', ['cubes' => $cubes, 'tags' => $tags]);
 
     }
 
@@ -92,13 +97,7 @@ class CubeController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Cube $cube)
-    {
-        //
-    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -108,14 +107,21 @@ class CubeController extends Controller
         if (!Auth::check()) {
             $this->middleware('auth');
             return redirect('cube')->with([
-                'message' => 'Only user have right to open this page!',
-                'status' => 'failed'
+                'message' => 'Only user has right to open this page!',
+                'status' => 'danger'
             ]);
         }
         $tags = Tag::all();
         $cube = Cube::find($id);
         $oldTag = Tag::where('id', $cube->tag_id)->first();
-        return view('cubes.edit', compact('cube'), ['tags' => $tags, 'tagName' => $oldTag]);
+        if (Auth::user()->id == $cube->user_id ||Auth::user()->role===1) {
+            return view('cubes.edit', compact('cube'), ['tags' => $tags, 'tagName' => $oldTag]);
+        }else{
+            return redirect('cubes')->with([
+                'message' => 'Only owner has right to edit this cube!',
+                'status' => 'danger'
+            ]);
+        }
     }
 
     /**
@@ -131,7 +137,16 @@ class CubeController extends Controller
             ]);
         }
         $cube = Cube::find($id);
-        return view('cubes.editImage', compact('cube'));
+
+        if (Auth::user()->id == $cube->user_id ||Auth::user()->role===1) {
+            return view('cubes.editImage', compact('cube'));
+        }else{
+            return redirect('cubes')->with([
+                'message' => 'Only owner has right to edit this cube!',
+                'status' => 'danger'
+            ]);
+        }
+
     }
 
     /**
@@ -143,8 +158,7 @@ class CubeController extends Controller
         $request->validate([
             'name' => 'required',
             'difficulty' => 'required',
-            'description' => 'required',
-            'image' => 'required|file|mimes:jpg,jpeg,png,gif|max:1024'
+            'description' => 'required'
         ]);
 
 
@@ -158,8 +172,6 @@ class CubeController extends Controller
             $cube->name = $request->input('name');
             $cube->tag_id = $tag->id;
             $cube->description = $request->input('description');
-            $imagePath = $request->file('image')->store('public/images');
-            $cube->cube_image = $imagePath;
             $cube->save();
             $message = 'Cube updated!';
             $status = 'success';
@@ -205,7 +217,7 @@ class CubeController extends Controller
     {
         $theCube = Cube::where('id', $cube)->first();
 
-        if ($theCube->user_id === auth()->id()) {
+        if ($theCube->user_id == Auth::user()->id ||Auth::user()->role===1) {
 
             if (Storage::exists($theCube->cube_image)) {
                 Storage::delete($theCube->cube_image);

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('cubes', function (Blueprint $table) {
-            $table->foreignId('user_id')->after('name')->nullable()->constrained()->nullOnDelete();;
+            $table->tinyInteger('is_enable')->after('id')->default('1');
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('cubes', function (Blueprint $table) {
-            $table->dropConstrainedForeignId('user_id');
+            $table->dropColumn('is_enable');
         });
     }
 };

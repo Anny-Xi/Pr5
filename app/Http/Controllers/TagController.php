@@ -6,6 +6,7 @@ use App\Models\Cube;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use const http\Client\Curl\Versions\CURL;
 
 class TagController extends Controller
 {
@@ -28,12 +29,12 @@ class TagController extends Controller
      */
     public function create()
     {
-        if (Auth::check()) {
+        if (Auth::check() && Cube::where('user_id',Auth::user()->id)->get()->count()>=3 ||Auth::user()->role===1) {
             return view('tags.create');
         } else{
             $this->middleware('auth');
             return redirect()->back()->with([
-                'message' => 'Only users can add new tags!',
+                'message' => 'Only users who has create 3 cubes can add new tags!',
                 'status' => 'danger'
             ]);
         }

@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', [HomeController::class, 'index']);
+Route::get('/home', [HomeController::class, 'index']);
+Route::get('/home/{id}', [HomeController::class, 'showCubes'])->name('home');
 
 Route::get('/cubes', [CubeController::class, 'index'])->name('cubes.index');
 Route::get('/cubes/create', [CubeController::class, 'create'])->name('cubes.create');
@@ -36,7 +38,14 @@ Route::get('/tags/create', [TagController::class, 'create'])->name('tags.create'
 Route::post('/tags/store', [TagController::class, 'store'])->name('tags.store');
 Route::delete('/tags/{id}', [TagController::class, 'destroy'])->name('tags.destroy');
 
+Route::middleware(['auth'])->group(function(){
+    Route::get('/users', [UserController::class, 'index'])->name('users.profile');
+    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
+    Route::get('/users/usersList', [UserController::class, 'showUsers'])->name('users.usersList');
+    Route::post('/users/enable/{id}',[UserController::class,'enableCube'])->name('enable');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
-Route::get('/users/edit', [UserController::class, 'edit'])->name('users.edit');
-Route::put('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
+});
+
+

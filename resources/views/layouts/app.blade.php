@@ -38,9 +38,6 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('tags.index') }}">View all Tags</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Search for a cube</a>
-                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -58,16 +55,23 @@
                             @endif
                         @else
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle text-capitalize" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
 {{--                                a if statement for--}}
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <div class="">
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="{{ route('users.profile') }}">
+                                            {{ __('Your profile') }}
+                                        </a>
+                                    </div>
+                                    @if(Auth::user()->role===1)
+                                    <div class="">
+                                        <a class="dropdown-item" href="{{ route('users.usersList') }}">
                                             {{ __('User list') }}
                                         </a>
                                     </div>
+                                    @endif
                                     <div>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
