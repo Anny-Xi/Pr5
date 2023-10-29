@@ -18,14 +18,12 @@
             <h1>Vandaag is {{$todayDate}}</h1>
 
             @foreach($tags as $tag)
-                <a href='{{ route('home', $tag->id)}}' class="btn btn-primary mr-5">View cube on {{$tag->name}}</a>
+                <a href='{{ route('home', $tag->id)}}' class="btn btn-primary mr-5">View cube with {{$tag->name}}</a>
             @endforeach
 
-            @guest
-                @if(!$cubes)
-                @endif
-            @else
-                <div class="d-flex flex-row">
+
+            @if($cubes)
+                <div class="row">
                     @foreach ($cubes as $cube)
                         <div class="card mt-5 mr-20" style="width: 18rem;">
                             <img class="card-img-top" src="{{ Storage::url($cube->cube_image) }}"
@@ -43,7 +41,7 @@
 
                     @endforeach
                 </div>
-            @endguest
+            @endif
 
 
         </div>

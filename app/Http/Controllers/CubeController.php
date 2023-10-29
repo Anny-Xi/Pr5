@@ -97,6 +97,13 @@ class CubeController extends Controller
         }
     }
 
+    public function showDetail($id)
+    {
+        $cube = Cube::find($id);
+        return view('cubes.showDetails', compact('cube'));
+
+    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -112,9 +119,8 @@ class CubeController extends Controller
         }
         $tags = Tag::all();
         $cube = Cube::find($id);
-        $oldTag = Tag::where('id', $cube->tag_id)->first();
         if (Auth::user()->id == $cube->user_id || Auth::user()->role === 1) {
-            return view('cubes.edit', compact('cube'), ['tags' => $tags, 'tagName' => $oldTag]);
+            return view('cubes.edit', compact('cube'), ['tags' => $tags]);
         } else {
             return redirect('cubes')->with([
                 'message' => 'Only owner has right to edit this cube!',

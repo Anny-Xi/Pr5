@@ -46,7 +46,7 @@
 
                                 <div class="col-md-6">
                                     <input list="levels" class="form-control @error('difficulty') is-invalid @enderror"
-                                           name="difficulty" value="{{$tagName->name}}" >
+                                           name="difficulty" value="{{$cube->tag->name}}" >
                                     <datalist id="levels">
                                         @foreach($tags as $tag)
                                             <option value="{{ $tag->name }}">

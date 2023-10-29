@@ -9,7 +9,6 @@
         <div class="card">
             <h2 class="card-header">Tag for cubes</h2>
 
-
             @if(session('message'))
                 <div class="alert alert-{{ session('status') }} alert-dismissible fade show mt-3" role="alert">
                     <strong>{{ session('message') }}</strong>
@@ -19,10 +18,12 @@
             @endif
 
             <div class="card-body">
+
+                <a href='{{ route('tags.create') }}' class="btn btn-success text-uppercase mb-3">Add tag</a>
+
                 <table class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                        {{--                        <th>Tag ID</th>--}}
                         <th>Tag name</th>
                         <th>Tag description</th>
                     </tr>
@@ -47,7 +48,6 @@
                     @endforeach
                     </tbody>
                 </table>
-                <a href='{{ route('tags.create') }}' class="btn btn-success text-uppercase">Add tag</a>
             </div>
         </div>
     </div>

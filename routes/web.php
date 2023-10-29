@@ -27,6 +27,7 @@ Route::get('/home/{id}', [HomeController::class, 'showCubes'])->name('home');
 Route::get('/cubes', [CubeController::class, 'index'])->name('cubes.index');
 Route::get('/cubes/create', [CubeController::class, 'create'])->name('cubes.create');
 Route::get('/cubes/{id}/edit', [CubeController::class, 'edit'])->name('cubes.edit');
+Route::get('/cubes/{id}/showDetails', [CubeController::class, 'showDetail'])->name('cubes.showDetails');
 Route::get('/cubes/{id}/editImage', [CubeController::class, 'editImage'])->name('cubes.editImage');
 Route::post('/cubes/store', [CubeController::class, 'store'])->name('cubes.store');
 Route::delete('/cubes/{id}', [CubeController::class, 'destroy'])->name('cubes.destroy');

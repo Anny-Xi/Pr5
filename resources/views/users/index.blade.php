@@ -4,8 +4,6 @@
 
 @section('content')
 
-
-
     <div class="container">
 
         <div class="card">
@@ -26,7 +24,7 @@
                     <H3 class="text-capitalize ">Name: {{$info->name}}</H3>
                     <H3 class="card-text">Email: {{$info->email}}</H3>
 
-                    <a href='{{ route('users.edit', $info->id)}}' class="btn btn-success text-uppercase">edit your
+                    <a href='{{ route('users.edit', $info->id)}}' class="btn btn-success text-uppercase mb-3">edit your
                         profile</a>
                 @endforeach
 
@@ -65,9 +63,8 @@
                             <td>
 
 
-                            @guest
-                                @if(Route::has('login') && Route::has('register'))
-                                @endif
+                            @if(!Auth::check())
+
                             @else
                                 <td>
                                     <a href='{{ route('cubes.edit', $cube->id)}}'
@@ -84,19 +81,19 @@
                                         <button type="submit" class="btn btn-danger">DELETE</button>
                                     </form>
                                 </td>
-                            @endguest
+                            @endif
                         </tr>
 
                     @endforeach
 
                     </tbody>
                 </table>
-                    @if(!Auth::user()->role)
-                        <th>You have create {{$cubes->count()}} cubes</th>
-                    @endif
-                    @if(Auth::user()->role)
-                        <th><h2>Users create {{$cubes->count()}} cubes</h2></th>
-                    @endif
+                @if(!Auth::user()->role)
+                    <th>You have create {{$cubes->count()}} cubes</th>
+                @endif
+                @if(Auth::user()->role)
+                    <th><h2>Users create {{$cubes->count()}} cubes</h2></th>
+                @endif
 
             </div>
 
